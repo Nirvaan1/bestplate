@@ -1,0 +1,45 @@
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Ajoutez un Ingredient :</h1>
+        <p class="lead">Remplissez les notions clés de votre Ingredient, pour l'ajoutez à votre cuisine du monde...</p>
+    </div>
+</div>
+
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert alert-<?php if (stristr($message,"Plat") == TRUE):?>success<?php else:?>danger<?php endif;?>"
+         role="alert" style="text-align: center; font-weight: bold">
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+
+
+<form class="container mt-5 mb-5" method="POST" action="<?= $router->generateUrl("resto_ingredient_create") ?>" enctype="multipart/form-data" data-validate>
+    <div class="form-group">
+        <label for="ingre">Nom de l'Ingredient</label>
+        <input class="form-control" type="text" name="name" placeholder="Ex :Carrote, oeuf..." id="ingre" data-required>
+    </div>
+    <div class="row">
+        <div class="form-group col-8">
+            <label for="img">Lien de L'Ingredient</label>
+            <input class="form-control" type="text" name="img" placeholder="Ex :" id="img" data-required>
+        </div>
+        <div class="form-group col-4">
+            <label for=""></label><br>
+            <a href="https://www.marmiton.org/recettes/index/ingredient" target="_blank" class="btn btn-success btn-lg active" role="button" aria-pressed="true">
+                Site de liens pour Ingredient
+            </a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="unit">Unit de l'ingredient</label>
+        <input class="form-control" type="text" name="unit" placeholder="Ex :nombre, gramme, cl..." id="unit">
+    </div>
+
+
+    <div class="form-group col-3 m-5 mx-auto">
+        <button type="submit" class="btn btn-primary mb-2">Enregistrer</button>
+    </div>
+
+</form>

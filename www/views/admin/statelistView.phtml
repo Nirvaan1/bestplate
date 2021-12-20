@@ -1,0 +1,79 @@
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert alert-success"
+         role="alert" style="text-align: center; font-weight: bold">
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+
+<div class="row container mx-auto mt-5 mb-5">
+    <div class="col-12 mx-auto">
+        <a href="<?= Router::getInstance()->generateUrl('resto_state_create')?>" class="btn btn-success btn-lg active" role="button" aria-pressed="true">
+            Ajouter un Pays
+        </a>
+    </div>
+
+    <div class="col-12 card mt-5">
+        <div class="card-box m-5">
+            <div class="col-12 mx-auto mb-5">
+                <h4 class="header-title">Liste des Pays</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th>Drapeau</th>
+                        <th>Pays</th>
+                        <th style="text-align: center">Option</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($allSTatesByPage as $detail): ?>
+                        <tr class="removable-container">
+                            <td><img src="<?= $detail['flag']?>" alt="<?= $detail['country']?>"></td>
+                            <td><?= $detail['country']?></td>
+                            <td style="text-align: center">
+                                <a href="<?= Router::getInstance()->generateUrl('resto_state_update')?>?id=<?= $detail['id'] ?>"
+                                   class="btn btn-info btn-lg active" role="button" aria-pressed="true">
+                                    Modifier
+                                </a>
+                                <a href="#" data-url="<?= Router::getInstance()->generateUrl('resto_state_delete')?>?id=<?= $detail['id'] ?>"
+                                   class="btn btn-danger btn-lg active ajax-remove-button" data-id="<?= $detail['id']?>" role="button" aria-pressed="true">
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-3 mx-auto m-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="<?= Router::getInstance()->generateUrl('resto_state_list')?>?page=<?= $pageCourant - 1 ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <?php for ($i=1;$i<=$totalPage;$i++): ?>
+                    <?php if ($i == $pageCourant): ?>
+                        <li class="page-item active"><a class="page-link" href="#"><?=$i?></a></li>
+                    <?php else: ?>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= Router::getInstance()->generateUrl('resto_state_list')?>?page=<?=$i?>"><?=$i?></a>
+                        </li>
+                    <?php endif ?>
+                <?php endfor;?>
+                <li class="page-item">
+                    <a class="page-link" href="<?= Router::getInstance()->generateUrl('resto_state_list')?>?page=<?= $pageCourant + 1 ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>

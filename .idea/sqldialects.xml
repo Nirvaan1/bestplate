@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/app/models/CommentModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/DishModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/IngredientModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/PaginationModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/QuantityModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/StateModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/StepsModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/TypeModel.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/models/UserModel.php" dialect="GenericSQL" />
+  </component>
+</project>

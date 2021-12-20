@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Cusine du Monde</h1>
+        <p class="lead">Tous les cultures se retrouvent dans <a class="uk-logo" href="<?= Router::getInstance()->generateUrl('resto_home_main')?>">CuisineCool</a>, il suffit juste de cliquer...</p>
+    </div>
+</div>
+<div class="uk-section uk-section-default uk-padding-remove-top">
+    <div class="uk-container">
+        <div class="uk-grid-large uk-grid" data-uk-grid="">
+
+            <?php foreach($allStateByPage as $detail):?>
+            <div class="uk-width-1-2@m">
+                <div class="uk-background-primary uk-border-rounded-large uk-light uk-padding uk-margin-top">
+                    <a href="<?= Router::getInstance()->generateUrl('resto_state_show')?>?pays=<?= $detail['id'] ?>" style="text-decoration: inherit">
+                        <div>
+                            <h2 class="uk-margin-bottom"><img src="<?= $detail['flag'] ?>" alt="<?= $detail['country'] ?>">  <?= $detail['country'] ?></h2>
+                            <p><?= $detail['description'] ?></p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+        <div class="uk-margin-large-top uk-text-small">
+            <ul class="uk-pagination uk-flex-center uk-text-500 uk-margin-remove" data-uk-margin>
+                <li>
+                    <a href="<?= Router::getInstance()->generateUrl('resto_state_showall')?>?page=<?= $pageCourant - 1 ?>" style="text-decoration: inherit">
+                        <span data-uk-pagination-previous></span>
+                    </a>
+                </li>
+                <?php for ($i=1;$i<=$totalPage;$i++): ?>
+                    <?php if ($i == $pageCourant): ?>
+                        <li><?=$i?></li>
+                    <?php else: ?>
+                        <li class="uk-active">
+                            <span><a href="<?= Router::getInstance()->generateUrl('resto_state_showall')?>?page=<?=$i?>" style="text-decoration: inherit"><?=$i?></a></span>
+                        </li>
+                    <?php endif ?>
+                <?php endfor;?>
+                <li>
+                    <a href="<?= Router::getInstance()->generateUrl('resto_state_showall')?>?page=<?= $pageCourant + 1 ?>" style="text-decoration: inherit">
+                        <span data-uk-pagination-next></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+</div>

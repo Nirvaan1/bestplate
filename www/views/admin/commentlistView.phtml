@@ -1,0 +1,147 @@
+<div class="jumbotron">
+    <h1 class="display-3">Toutes les Commentaires</h1>
+    <hr class="my-4">
+</div>
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert alert-success"
+         role="alert" style="text-align: center; font-weight: bold">
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+<div class="row col-12 mx-auto">
+        <div class=" col-12 m-2">
+            <div class="card">
+                <div class="card-header" style="text-align: center; font-weight: bold; color: #96989b">
+                    Commentaires en Attente de traitement :
+                </div>
+            </div>
+            <table class="table table-hover table-secondary">
+                <thead>
+                <tr>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Contenu</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col" style="text-align: center">Notation</th>
+                    <th scope="col" style="text-align: center">Option</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($allComments as $detail):?>
+                        <?php if ($detail['statu'] == "traitement"):?>
+                            <tr class="removable-container">
+                                <td><?= $detail['name']?></td>
+                                <td><?= $detail['description']?></td>
+                                <td>
+                                    <?php if ($detail['entity'] == "dish"):?>Plat
+                                    <?php else:?>Pays
+                                    <?php endif;?>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="uk-rating-<?php if ($detail['note']<1):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                    <span class="uk-rating-<?php if ($detail['note']<2):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                    <span class="uk-rating-<?php if ($detail['note']<3):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                    <span class="uk-rating-<?php if ($detail['note']<4):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                    <span class="uk-rating-<?php if ($detail['note']<5):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+
+                                </td>
+                                <td style="text-align: center">
+                                    <a href="<?= Router::getInstance()->generateUrl('resto_comment_confirm')?>?id=<?= $detail['id'] ?>"
+                                       class="btn btn-info btn active" role="button" aria-pressed="true">
+                                        Approuver
+                                    </a>
+                                    <a href="#" data-url="<?= Router::getInstance()->generateUrl('resto_comment_delete')?>?id=<?= $detail['id'] ?>"
+                                       class="btn btn-danger btn active ajax-remove-button" data-id="<?= $detail['id']?>" role="button" aria-pressed="true">
+                                        Supprimer
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-6">
+            <div class="card secondary">
+                <div class="card-header" style="text-align: center; font-weight: bold; color: #bcab77">
+                    Tous les Commentaires sur les Plats:
+                </div>
+            </div>
+            <table class="table table-hover table-warning">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Contenu</th>
+                    <th scope="col" style="text-align: center">Notation</th>
+                    <th scope="col" style="text-align: center">Option</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($allComments as $detail):?>
+                    <?php if ($detail['statu'] == "approuver" && $detail['entity'] == "dish"):?>
+                        <tr class="removable-container">
+                            <td><?= $detail['name']?></td>
+                            <td><?= $detail['description']?></td>
+                            <td style="text-align: center">
+                                <span class="uk-rating-<?php if ($detail['note']<1):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<2):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<3):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<4):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<5):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                            </td>
+                            <td style="text-align: center">
+                                <a href="#" data-url="<?= Router::getInstance()->generateUrl('resto_comment_delete')?>?id=<?= $detail['id'] ?>"
+                                   class="btn btn-danger btn active ajax-remove-button" data-id="<?= $detail['id']?>" role="button" aria-pressed="true">
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endif;?>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+
+<!--                     ######################################## SEPARATION DES 2 TABLEAUX ######################################### -->
+
+        <div class="col-6">
+            <div class="card info">
+                <div class="card-header" style="text-align: center; font-weight: bold; color: #90b6bc">
+                    Tous les Commentaires sur les Pays:
+                </div>
+            </div>
+            <table class="table table-hover table-info">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Contenu</th>
+                    <th scope="col" style="text-align: center">Notation</th>
+                    <th scope="col" style="text-align: center">Option</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($allComments as $detail):?>
+                    <?php if ($detail['statu'] == "approuver" && $detail['entity'] == "state"):?>
+                        <tr class="removable-container">
+                            <td><?= $detail['name']?></td>
+                            <td><?= $detail['description']?></td>
+                            <td style="text-align: center">
+                                <span class="uk-rating-<?php if ($detail['note']<1):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<2):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<3):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<4):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($detail['note']<5):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+
+                            </td>
+                            <td style="text-align: center">
+                                <a href="#" data-url="<?= Router::getInstance()->generateUrl('resto_comment_delete')?>?id=<?= $detail['id'] ?>"
+                                   class="btn btn-danger btn active ajax-remove-button" data-id="<?= $detail['id']?>" role="button" aria-pressed="true">
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endif;?>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+    </div>

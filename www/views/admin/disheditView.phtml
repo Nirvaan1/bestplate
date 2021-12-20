@@ -1,0 +1,198 @@
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Leckerli+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?= $router->getWwwPath()?>/css/main.css?b=<?= date('ymdHis') ?>" />
+
+
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert alert-<?php if (stristr($message,"Plat") == TRUE):?>success<?php else:?>danger<?php endif;?>"
+         role="alert" style="text-align: center; font-weight: bold">
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+
+
+
+<div class="uk-container mt-5">
+    <div data-uk-grid>
+        <div class="uk-width-1-2@s">
+            <form action="<?= $router->generateUrl("resto_dish_update")?>" method="POST" enctype="multipart/form-data" data-validate>
+                <?php if ($dish["img"]): ?>
+                    <div>
+                        <img class="uk-border-rounded-large"  src="<?= $router->getWwwPath()?>/uploads/dish/<?= $dish['img']?>" alt="<?= $dish['name'] ?>">
+                    </div>
+
+                    <div class="row m-3">
+                        <input type="text" hidden="hidden" name="id" value="<?= $dish["dishId"] ?>">
+                        <input type="submit" name="submitImg" class="btn btn-danger mx-auto ajax-reload-button" value="Effacer / Remplacer">
+                    </div>
+                <?php else:?>
+                    <div>
+                        <img class="uk-border-rounded-large"  src="<?= Router::getInstance()->getWwwPath()?>/img/default_dish.png" alt="<?= $dish['img']?>">
+                    </div>
+                    <div class="row m-3">
+                        <div class="m-2 card-header custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="img" value="Ajoutez une image ">
+                            <label class="custom-file-label" for="customFile">Choisir la Photo</label>
+                        </div>
+                        <input type="text" hidden="hidden" name="id" value="<?= $dish["dishId"] ?>">
+                        <input type="submit" name="submitImg" class="btn btn-primary mx-auto ajax-reload-button" value="Enregisrer">
+                    </div>
+                <?php endif;?>
+            </form>
+        </div>
+        <div class="uk-width-expand@s uk-flex uk-flex-middle col-12 removable-container">
+            <form method="POST"  action="<?= $router->generateUrl("resto_dish_update") ?>" enctype="multipart/form-data" data-validate class="col-12">
+                <div class="card-header mb-3">
+                        <label for="create_name">Nom du Plat</label>
+                        <input class="form-control" type="text" name="name"  value="<?= $dish['name'] ?>" id="create_name" data-required>
+                </div>
+                <div class="card-header mb-3">
+                        <label for="create_description">La Description</label>
+                        <textarea class="form-control" type="text" name="description" id="create_description" rows="5" data-minlength="250"><?= $dish['description'] ?></textarea>
+                </div>
+                    <div class="row card-header m-2">
+                        <div class="form-group col-4 ">
+                            <label for="activeTime">Préparation</label>
+                            <input class="form-control" type="number" id="activeTime" min="0" max="1000" name="activeTime" data-bind="value:replyNumber"  value="<?= $dish['activeTime'] ?>" />
+                        </div>
+                        <div class="form-group col-4 ">
+                            <label for="bakingTime">Cuisson</label>
+                            <input class="form-control" type="number" id="bakingTime" min="0" max="1000" name="bakingTime" data-bind="value:replyNumber"  value="<?= $dish['bakingTime'] ?>" />
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="service">Personnes</label>
+                            <input class="form-control" type="number" id="service" min="0" max="1000" name="service" data-bind="value:replyNumber"  value="<?= $dish['service'] ?>"/>
+                        </div>
+                </div>
+                <div class="card-header row m-3 ">
+                    <div class="form-group col-6">
+                        <label for="create_origin">Origine du Plat</label>
+                        <select class="form-control" name="state" id="create_origin">
+                            <option value="<?= $state['idState'] ?>"><?= $state['country'] ?></option>
+                            <?php foreach($states as $detail): ?>
+                                <option value="<?= $detail['id']?>"><?= $detail['country']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="create_type">Type de Plat</label>
+                        <select class="form-control" name="type" id="create_type">
+                            <option value="<?= $type['idType']?>"><?= $type['type']?></option>
+                            <?php foreach($types as $detail): ?>
+                                <option value="<?= $detail['id']?>"><?= $detail['type']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <input type="text" hidden="hidden" name="id" value="<?= $dish["dishId"] ?>">
+                    <input type="submit" name="formDish" class="btn btn-primary mx-auto ajax-reload-button" value="Enregisrer">
+                </div>
+
+
+
+                <hr>
+                <div data-uk-grid>
+                    <div class="uk-width-auto@s uk-text-small">
+                        <p class="uk-margin-small-top uk-margin-remove-bottom">Créé Par <a href="#">Alex Williamns</a></p>
+                        <span class="uk-text-muted">21 recipes</span>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="uk-section uk-section-default">
+    <div class="uk-container uk-container-small">
+        <div class="uk-grid-large" data-uk-grid>
+            <div class="uk-width-expand@m">
+                <div class="uk-article">
+                    <h3>La préparation</h3>
+                    <?php foreach ($step as $detail):?>
+                        <div id="step-<?= $detail['num']?>" class="uk-grid-small uk-margin-medium-top removable-container" data-uk-grid>
+                            <div class="uk-width-auto">
+                                <a href="#" class="uk-step-icon" data-uk-icon="icon: check; ratio: 0.8"
+                                   data-uk-toggle="target: #step-<?= $detail['num']?>; cls: uk-step-active"></a>
+                            </div>
+                            <div class="uk-width-expand ">
+                                <h5 class="uk-step-title uk-text-500 uk-text-uppercase uk-text-primary" data-uk-leader="fill:—"><?= $detail['num']?>. Etape</h5>
+                                <div class="uk-step-content"><?= $detail['description']?></div>
+                                <div style="margin-top: 5%">
+                                    <a href="#" data-url="<?= Router::getInstance()->generateUrl('resto_step_delete')?>?id=<?= $detail['id'] ?>"
+                                       class="btn btn-danger active ajax-remove-button" data-id="<?= $detail['id']?>" role="button" aria-pressed="true">
+                                        Supprimer l'Etape
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                    <hr class="uk-margin-medium-top uk-margin-large-bottom">
+                    <div>
+                        <form method="POST"  action="<?= $router->generateUrl("resto_step_create") ?>" enctype="multipart/form-data" data-validate class="col-12">
+                            <div class="card-header mb-3">
+                                <label for="number">Numéro de l'étape</label>
+                                <input class="form-control" type="number" id="number" min="0" max="30" name="num" data-bind="value:replyNumber"/>
+                            </div>
+                            <div class="card-header mb-3">
+                                <label for="descriptionStep">La Description</label>
+                                <textarea class="form-control" type="text" name="description" id="descriptionStep" rows="5" data-minlength="250"></textarea>
+                            </div>
+                            <div class="row m-3 ">
+                                <input type="text" hidden="hidden" name="dishId" value="<?= $dish["dishId"] ?>">
+                                <input type="submit" name="formStep" class="btn btn-primary mx-auto" value="Enregisrer l'étape">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-1-3@m">
+
+                <h3>Ingredients</h3>
+
+                <ul class="uk-list uk-list-large uk-list-divider uk-margin-medium-top">
+
+                    <?php foreach($quantity as $detail):?>
+                        <li class="removable-container">
+                            <a href="#" data-url="<?= Router::getInstance()->generateUrl('resto_quantity_delete')?>?id=<?= $detail['quantityId'] ?>"
+                               class="btn btn-danger btn-lg active ajax-remove-button" data-id="<?= $detail['quantityId']?>" role="button" aria-pressed="true">
+                                X
+                            </a>
+                            <img style="max-width: 60px" src="<?= $detail['img'] ?>">
+                            <?= $detail['qte'] ?>
+                            <?php if ($detail['unit'] != "nombre"): ?><?= $detail['unit']?><?php endif;?>
+                            - <?= $detail['name']?>
+                        </li>
+                    <?php endforeach;?>
+                    <li>
+                        <form method="POST"  action="<?= $router->generateUrl("resto_quantity_create") ?>" enctype="multipart/form-data" data-validate class="col-12">
+                                <div class="form-group col-12">
+                                    <label for="create_ingre">Selection Ingredient</label>
+                                    <select class="form-control" name="ingredient" id="create_ingre">
+                                        <option value="-1">Ingredient</option>
+                                        <?php foreach($ingre as $detail): ?>
+                                            <option value="<?= $detail['id']?>"><?= $detail['name']?> - <?= $detail['unit']?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="quantity">Quantitée</label>
+                                    <input class="form-control" type="number" id="quantity" min="0" max="10000" name="qte" data-bind="value:replyNumber"/>
+                                </div>
+                                <div class="form-group col-12">
+                                    <input type="text" hidden="hidden" name="dishId" value="<?= $dish["dishId"] ?>">
+                                    <input type="submit" name="formQte" class="btn btn-primary mx-auto ajax-reload-button" value="Enregisrer l'Ingredients">
+                                </div>
+                        </form>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

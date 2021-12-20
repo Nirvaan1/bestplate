@@ -1,0 +1,212 @@
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////--DISH--//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert" style="text-align: center;background-color:<?php if (stristr($message,"traitement") == TRUE):?>forestgreen<?php else:?>red<?php endif;?>">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+<div class="uk-container">
+    <div data-uk-grid>
+        <div class="uk-width-1-2@s">
+            <div>
+                <img class="uk-border-rounded-large" src="<?= $router->getWwwPath()?>/uploads/dish/<?= $dish['img']?>" alt="<?= $dish['name']?>">
+            </div>
+        </div>
+        <div class="uk-width-expand@s uk-flex uk-flex-middle">
+            <div>
+                <h1><?= $dish['name'] ?></h1>
+                <p><?= $dish['description'] ?></p>
+                <div class="uk-margin-medium-top uk-child-width-expand uk-text-center uk-grid-divider" data-uk-grid>
+                    <div>
+                        <span data-uk-icon="icon: clock; ratio: 1.4"></span>
+                        <h5 class="uk-text-500 uk-margin-small-top uk-margin-remove-bottom">Préparation</h5>
+                        <span class="uk-text-small"><?= $dish['activeTime'] ?> mins</span>
+                    </div>
+                    <div>
+                        <span data-uk-icon="icon: future; ratio: 1.4"></span>
+                        <h5 class="uk-text-500 uk-margin-small-top uk-margin-remove-bottom">Cuisson</h5>
+                        <span class="uk-text-small"><?= $dish['bakingTime'] ?> mins</span>
+                    </div>
+                    <div>
+                        <span data-uk-icon="icon: users; ratio: 1.4"></span>
+                        <h5 class="uk-text-500 uk-margin-small-top uk-margin-remove-bottom">Service</h5>
+                        <span class="uk-text-small"><?= $dish['service'] ?> Personnes</span>
+                    </div>
+                </div>
+                <hr>
+                <div data-uk-grid>
+                    <div class="uk-width-auto@s uk-text-small">
+                        <p class="uk-margin-small-top uk-margin-remove-bottom">Crée par <a href="#"><?= $dish['lastname'] ?> <?= $dish['forname'] ?></a></p>
+                        <span class="uk-text-muted"><?= $numberRecipes['numberRecipe'] ?> recettes</span>
+                    </div>
+                    <div class="uk-width-expand@s uk-flex uk-flex-middle uk-flex-right@s">
+                        <?php if (isset($dish['note'])):?>
+                            <div class="uk-width-auto uk-flex uk-flex-middle">
+                                <span> (<?= $dish['com']?>)</span>
+                                <span class="uk-rating-<?php if ($dish['note']<1):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($dish['note']<2):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($dish['note']<3):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($dish['note']<4):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                <span class="uk-rating-<?php if ($dish['note']<5):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                            </div>
+                        <?php endif?>
+                        <a href="javascript:window.print()" class="uk-icon-link uk-margin-left" data-uk-icon="icon: print; ratio: 1.2"
+                           data-uk-tooltip="title: Imprimer <?= $dish['name']?>"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="uk-section uk-section-default">
+    <div class="uk-container uk-container-small">
+        <div class="uk-grid-large" data-uk-grid>
+            <div class="uk-width-expand@m">
+                <div class="uk-article">
+                    <h3>Etape Préparation</h3>
+                    <?php foreach ($step as $detail): ?>
+                    <div id="step-<?= $detail['num'] ?>" class="uk-grid-small uk-margin-medium-top" data-uk-grid>
+                        <div class="uk-width-auto">
+                            <a href="#" class="uk-step-icon" data-uk-icon="icon: check; ratio: 0.8"
+                               data-uk-toggle="target: #step-<?= $detail['num'] ?>; cls: uk-step-active"></a>
+                        </div>
+                        <div class="uk-width-expand">
+                            <h5 class="uk-step-title uk-text-500 uk-text-uppercase uk-text-primary" data-uk-leader="fill:—"><?= $detail['num'] ?>. Etape</h5>
+                            <div class="uk-step-content"><?= $detail['description'] ?></div>
+                        </div>
+                    </div>
+                    <?php endforeach;?>
+
+                    <hr class="uk-margin-medium-top uk-margin-large-bottom">
+                    <h3 id="test">Ajouter votre Commentaire</h3>
+                    <ul class="uk-comment-list uk-margin-medium-top">
+                        <li >
+                        <form class="uk-comment uk-comment-primary" method="POST" action="<?= $router->generateUrl("resto_dish_showone")?>?id=<?= $dish['dishId']?>" enctype="multipart/form-data" data-validate tabindex="-1">
+                            <header class="uk-comment-header uk-position-relative">
+                                <div class="uk-grid-medium uk-flex-middle" data-uk-grid>
+                                    <div class="uk-width-auto">
+                                        <img class="uk-comment-avatar uk-border-circle" src="https://via.placeholder.com/100x100" width="50" height="50" alt="Alice Thomson">
+                                    </div>
+                                    <div class="uk-width-expand">
+                                        <label for="name" style="margin-left: 1%">Pseudo :</label><br>
+                                        <input class="uk-comment-title uk-margin-remove" name="name" id="name" style="border-radius: 10px; border: none">
+                                    </div>
+                                    <div class="uk-width-expand">
+                                        <input type="hidden" name="note" value="" id="note"/>
+                                        <i id="clear_stars" class="fa fa-times-circle"  style="font-size: 20px;margin-top: 10px"></i>
+                                        <span id="star_1" class="star uk-rating-star" data-uk-icon="icon: star; ratio: 1"></span>
+                                        <span id="star_2" class="star uk-rating-star" data-uk-icon="icon: star; ratio: 1"></span>
+                                        <span id="star_3" class="star uk-rating-star" data-uk-icon="icon: star; ratio: 1"></span>
+                                        <span id="star_4" class="star uk-rating-star" data-uk-icon="icon: star; ratio: 1"></span>
+                                        <span id="star_5" class="star uk-rating-star" data-uk-icon="icon: star; ratio: 1"></span>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="uk-comment-body">
+                                <label for="description" style="margin-left: 3%">Commentaire :</label><br>
+                                <textarea name="description" id="description" style="border-radius: 20px; padding: 20px; width: 80%; border: none"></textarea>
+                            </div>
+                            <input type="text" name="dishId" value="<?= $dish['dishId']?>" hidden="hidden">
+                            <button class="uk-button uk-button-primary" type="submit" style="margin: 3%">Publier</button>
+                        </form>
+
+                        <ul>
+                            <?php foreach($allCommentByPage as $detail):?>
+                                <?php if ($detail['statu'] == "approuver"):?>
+                                    <li>
+                                        <article class="uk-comment uk-comment-primary uk-visible-toggle uk-border-rounded" tabindex="-1">
+                                            <header class="uk-comment-header uk-position-relative">
+                                                <div class="uk-grid-medium uk-flex-middle" data-uk-grid>
+                                                    <div class="uk-width-auto">
+                                                        <img class="uk-comment-avatar uk-border-circle" src="https://via.placeholder.com/100x100" width="50" height="50" alt="Tom Solender">
+                                                    </div>
+                                                    <div class="uk-width-expand">
+                                                        <h4 class="uk-comment-title uk-margin-remove"><?= $detail['nameCom']?></h4>
+                                                        <span class="uk-rating-<?php if ($detail['note']<1):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                                        <span class="uk-rating-<?php if ($detail['note']<2):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                                        <span class="uk-rating-<?php if ($detail['note']<3):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                                        <span class="uk-rating-<?php if ($detail['note']<4):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                                        <span class="uk-rating-<?php if ($detail['note']<5):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+
+                                                        <p class="uk-comment-meta uk-margin-remove-top"><a class="uk-link-reset" href="#"><?= $detail['date']?></a></p>
+                                                    </div>
+                                                </div>
+                                            </header>
+                                            <div class="uk-comment-body">
+                                                <p><?= $detail['descripCom']?></p>
+                                            </div>
+                                        </article>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="uk-margin-large-top uk-text-small">
+                    <ul class="uk-pagination uk-flex-center uk-text-500 uk-margin-remove" data-uk-margin>
+                        <li>
+                            <a href="<?= Router::getInstance()->generateUrl('resto_dish_showone')?>?id=<?=$dish['dishId']?>&amp;page=<?= $pageCourant - 1 ?>#test">
+                                <span data-uk-pagination-previous></span>
+                            </a>
+                        </li>
+                        <?php for ($i=1;$i<=$totalPage;$i++): ?>
+                            <?php if ($i == $pageCourant): ?>
+                                <li><?=$i?></li>
+                            <?php else: ?>
+                                <li class="uk-active">
+                                    <span><a href="<?= Router::getInstance()->generateUrl('resto_dish_showone')?>?id=<?=$dish['dishId']?>&amp;page=<?=$i?>#test"><?=$i?></a></span>
+                                </li>
+                            <?php endif ?>
+                        <?php endfor;?>
+                        <li>
+                            <a href="<?= Router::getInstance()->generateUrl('resto_dish_showone')?>?id=<?=$dish['dishId']?>&amp;page=<?= $pageCourant + 1 ?>#test">
+                                <span data-uk-pagination-next></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="uk-width-1-3@m">
+                <h3>Ingredients</h3>
+                <ul class="uk-list uk-list-large uk-list-divider uk-margin-medium-top">
+                    <?php foreach ($quantity as $detail):?>
+                    <li>
+                        <img src="<?= $detail['img']?>" alt="<?= $detail['name']?>" width="80px">
+                        <?= $detail['name'] ?> - <?= $detail['qte'] ?>
+                        <?php if(!$detail['unit'] == "nombre"):?><?= $detail['unit'] ?><?php endif;?>
+                    </li>
+                    <?php endforeach;?>
+                </ul>
+                <h3 class="uk-margin-large-top">Tags</h3>
+                <div class="uk-margin-medium-top" data-uk-margin>
+                    <a class="uk-display-inline-block" href="<?= Router::getInstance()->generateUrl('resto_state_show')?>?pays=<?= $state["stateId"] ?>">
+                        <span class="uk-label uk-label-light">
+                            <img src="<?= $state['flag'] ?>" width="25px" alt="<?= $state['country'] ?>"> -
+                             <?= $state['country'] ?>
+                        </span>
+                    </a>
+                </div>
+                <h3 class="uk-margin-large-top">Partager la Recette</h3>
+                <div class="uk-margin-medium-top">
+                    <div data-uk-grid class="uk-child-width-auto uk-grid-small">
+                        <div>
+                            <a href="https://fr-fr.facebook.com/" data-uk-icon="icon: facebook; ratio: 0.9" class="uk-icon-button facebook" target="_blank"></a>
+                        </div>
+                        <div>
+                            <a href="https://fr.linkedin.com/" data-uk-icon="icon: linkedin; ratio: 0.9" class="uk-icon-button linkedin" target="_blank"></a>
+                        </div>
+                        <div>
+                            <a href="https://twitter.com/explore" data-uk-icon="icon: twitter; ratio: 0.9" class="uk-icon-button twitter" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

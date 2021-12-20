@@ -1,0 +1,71 @@
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Ajoutez votre Plat:</h1>
+        <p class="lead">Tous ca en plusieurs étapes, remplissez dans un premier temps les notions clefs de votre plat...</p>
+    </div>
+</div>
+
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert alert-<?php if (stristr($message,"Plat") == TRUE):?>success<?php else:?>danger<?php endif;?>"
+         role="alert" style="text-align: center; font-weight: bold">
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+
+
+<form class="container mt-5 mb-5" method="POST" action="<?= $router->generateUrl("resto_dish_create") ?>" enctype="multipart/form-data" data-validate>
+    <div class="form-group">
+        <label for="create_name">Nom du Plat</label>
+        <input class="form-control" type="text" name="name" placeholder="Ex :Tarte au pommes" id="create_name" data-required>
+    </div>
+    <div class="form-group">
+        <label for="create_description">La Description</label>
+        <textarea class="form-control" type="text" name="description" placeholder="Ex :Avec beaucoup de pommes et une pointe de chantilly..." id="create_description" rows="5" data-minlength="250"></textarea>
+    </div>
+    <div class="form-group row">
+        <div class="form-group col-4">
+            <label for="activeTime">Le Temps de Préparation</label>
+            <input class="form-control" type="number" id="activeTime" min="0" max="1000" name="activeTime" data-bind="value:replyNumber" />
+        </div>
+        <div class="form-group col-4">
+            <label for="bakingTime">Le Temps de Cuisson</label>
+            <input class="form-control" type="number" id="bakingTime" min="0" max="1000" name="bakingTime" data-bind="value:replyNumber" />
+        </div>
+        <div class="form-group col-4">
+            <label for="service">Nombre de Personnes</label>
+            <input class="form-control" type="number" id="service" min="0" max="1000" name="service" data-bind="value:replyNumber" />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="create_origin">Origine du Plat</label>
+        <select class="form-control" name="state" id="create_origin" data-requiredselect="-1">
+            <option value="-1">Pays...</option>
+            <?php foreach($states as $detail): ?>
+                <option value="<?= $detail['id']?>"><?= $detail['country']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="create_type">Type de Plat</label>
+        <select class="form-control" name="type" id="create_type" data-requiredselect="-1">
+            <option value="-1">Entrées, Appéritif...</option>
+            <?php foreach($type as $detail): ?>
+                <option value="<?= $detail['id']?>"><?= $detail['type']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+
+    <div class="form-group custom-file">
+        <input type="file" class="custom-file-input" id="customFile" name="img" value="Ajoutez une image ">
+        <label class="custom-file-label" for="customFile">Choisir la Photo</label>
+    </div>
+
+    <div class="form-group col-3 m-5 mx-auto">
+        <button type="submit" class="btn btn-primary mb-2">Passer à l'etape suivante</button>
+    </div>
+
+</form>

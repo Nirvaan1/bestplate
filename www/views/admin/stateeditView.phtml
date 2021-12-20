@@ -1,0 +1,49 @@
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Modifier le Pays : <?= $state['country']?></h1>
+        <p class="lead">Remplissez les notions clefs de votre Pays, pour l'ajoutez à votre cuisine du monde...</p>
+    </div>
+</div>
+
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert alert-<?php if (stristr($message,"Plat") == TRUE):?>success<?php else:?>danger<?php endif;?>"
+         role="alert" style="text-align: center; font-weight: bold">
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+
+
+<form class="container mt-5 mb-5" method="POST" action="<?= $router->generateUrl("resto_state_update") ?>" enctype="multipart/form-data" data-validate>
+    <div class="form-group">
+        <label for="country">Nom du Pays</label>
+        <input class="form-control" type="text" name="country" value="<?= $state['country']?>" id="country" data-required>
+    </div>
+    <div class="row">
+        <div class="form-group col-8">
+            <label for="flag">Lien du Drapeau</label>
+            <input class="form-control" type="text" name="flag" value="<?= $state['flag']?>" id="flag" data-required>
+        </div>
+        <div class="form-group col-4">
+            <label for=""></label><br>
+            <a href="https://www.countryflags.io/" target="_blank" class="btn btn-success btn-lg active" role="button" aria-pressed="true">
+                Site de liens pour Drapeau
+            </a>
+        </div>
+    </div>
+    <input class="form-control" hidden="hidden" type="text" name="id" value="<?= $state['id']?>">
+
+
+    <div class="form-group">
+        <label for="create_description">La Description culinaire</label>
+        <textarea class="form-control" type="text" name="description" id="create_description" rows="5" data-minlength="250">
+            <?= $state['description']?>
+        </textarea>
+    </div>
+
+
+    <div class="form-group col-3 m-5 mx-auto">
+        <button type="submit" class="btn btn-primary mb-2">Modifier</button>
+    </div>
+
+</form>

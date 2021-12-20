@@ -1,0 +1,271 @@
+
+<div class="uk-container">
+    <div class="uk-border-rounded-large uk-background-top-center uk-background-cover
+    uk-background-norepeat uk-light uk-inline uk-overflow-hidden uk-width-1-1"
+         style="background-image: url(<?= Router::getInstance()->getWwwPath()?>/img/background.jpg);">
+        <div class="uk-position-cover uk-header-overlay"></div>
+        <div class="uk-position-relative" data-uk-grid>
+            <div class="uk-width-1-2@m uk-flex uk-flex-middle">
+                <div class="uk-padding-large uk-padding-remove-right">
+                    <h1 class="uk-heading-small uk-margin-remove-top">Choisissez parmi des milliers de recettes</h1>
+                    <p class="uk-text-secondary">Ici toutes les cuisines se retrouvent, avec des milliers de saveurs, rejoint nous est montre nous tes savoirs...</p>
+                    <a class="uk-text-secondary uk-text-600 uk-text-small hvr-forward" href="<?= Router::getInstance()->generateUrl('resto_user_create')?>">Nous rejoindre<span
+                                class="uk-margin-small-left" data-uk-icon="arrow-right"></span></a>
+                </div>
+            </div>
+            <div class="uk-width-expand@m">
+            </div>
+        </div>
+    </div>
+</div>
+<?php foreach(Flashbag::getInstance()->consumeAllMessage() as $message):?>
+    <div class="alert" style="text-align: center;background-color:forestgreen">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <?= $message ?>
+    </div>
+<?php endforeach; ?>
+
+<div class="uk-section uk-section-default">
+    <div class="uk-container">
+        <div data-uk-grid>
+            <div class="uk-width-1-4@m sticky-container">
+                <div data-uk-sticky="offset: 100; bottom: true; media: @m;">
+                    <h2>Recipes</h2>
+                    <ul class="uk-nav-default uk-nav-parent-icon uk-nav-filter uk-margin-medium-top" data-uk-nav>
+                        <li class="uk-parent uk-open">
+                            <a href="#">Cusine du Monde</a>
+                            <ul class="uk-nav-sub">
+                                <?php foreach($state as $detail): ?>
+                                <li>
+                                    <a href="<?= Router::getInstance()->generateUrl('resto_state_show')?>?pays=<?=$detail['id']?>">
+                                        <img src="<?=$detail['flag']?>" width="25px" alt="<?=$detail['country']?>"> - <?= $detail['country']?>
+                                    </a>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="uk-parent">
+                            <a href="#">Type De Recettes</a>
+                            <ul class="uk-nav-sub">
+                                <?php foreach($allType as $detail): ?>
+                                    <li>
+                                        <a href="<?= Router::getInstance()->generateUrl('resto_type_show')?>?type=<?=$detail['id']?>"><?=$detail['type']?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="uk-width-expand@m">
+                <div data-uk-grid>
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+                    <div class="uk-width-expand@m">
+                        <form class="uk-search uk-search-default uk-width-1-1" method="GET" action="<?= Router::getInstance()->generateUrl('resto_dish_search')?>">
+                            <input id="search-user" name="q" class="uk-search-input uk-text-small uk-border-rounded uk-form-large" type="search" placeholder="Cherhcer votre Plat...">
+                            <button type="submit" hidden></button>
+                            <div style="margin-top: 20px" id="result-search"></div>
+                        </form>
+                    </div>
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+                </div>
+                <div class="uk-child-width-1-2 uk-child-width-1-3@s" data-uk-grid>
+                    <?php foreach($allDishesByPage as $detail): ?>
+                    <div>
+                        <div class="uk-card">
+                            <div class="uk-card-media-top uk-inline uk-light">
+                                <img class="uk-border-rounded-medium" src="<?= $router->getWwwPath()?>/uploads/dish/<?= $detail['img']?>" alt="<?= $detail['name']?>" >
+                                <div class="uk-position-cover uk-card-overlay uk-border-rounded-medium"></div>
+                                <div class="uk-position-xsmall uk-position-top-right">
+                                    <img src="<?= $detail['flag']?>" alt="<?= $detail['country']?>" style="width:25px; border-radius:50px" class="uk-like uk-position-z-index uk-position-relative">
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="uk-card-title uk-text-500 uk-margin-small-bottom uk-margin-top"><?= $detail['name']?></h3>
+                                <div class="uk-text-xsmall uk-text-muted" data-uk-grid>
+                                    <?php if (isset($detail['note'])):?>
+                                        <div class="uk-width-auto uk-flex uk-flex-middle">
+                                            <span class="uk-rating-<?php if ($detail['note']<1):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                            <span class="uk-rating-<?php if ($detail['note']<2):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                            <span class="uk-rating-<?php if ($detail['note']<3):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                            <span class="uk-rating-<?php if ($detail['note']<4):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                            <span class="uk-rating-<?php if ($detail['note']<5):?>star<?php else:?>filled<?php endif;?>" data-uk-icon="icon: star; ratio: 1"></span>
+                                            <span> (<?= $detail['com']?>)</span>
+                                        </div>
+                                    <?php endif?>
+                                    <div class="uk-width-expand uk-text-right">Par <?= $detail['forname']?> <?= $detail['lastname']?></div>
+                                </div>
+                            </div>
+                            <a href="<?= Router::getInstance()->generateUrl('resto_dish_showone')?>?id=<?= $detail["dishId"] ?>" class="uk-position-cover"></a>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+
+                </div>
+                <div class="uk-margin-large-top uk-text-small">
+                    <ul class="uk-pagination uk-flex-center uk-text-500 uk-margin-remove" data-uk-margin>
+                        <li>
+                            <a href="<?= Router::getInstance()->generateUrl('resto_home_main')?>?page=<?= $pageCourant - 1 ?>">
+                                <span data-uk-pagination-previous></span>
+                            </a>
+                        </li>
+                        <?php for ($i=1;$i<=$totalPage;$i++): ?>
+                            <?php if ($i == $pageCourant): ?>
+                                <li><?=$i?></li>
+                            <?php else: ?>
+                                <li class="uk-active">
+                                    <span><a href="<?= Router::getInstance()->generateUrl('resto_home_main')?>?page=<?=$i?>"><?=$i?></a></span>
+                                </li>
+                            <?php endif ?>
+                        <?php endfor;?>
+                        <li>
+                            <a href="<?= Router::getInstance()->generateUrl('resto_home_main')?>?page=<?= $pageCourant + 1 ?>">
+                                <span data-uk-pagination-next></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="uk-section uk-section-default">
+    <div class="uk-container">
+        <div data-uk-grid>
+            <div class="uk-width-expand">
+                <h2>Videos</h2>
+            </div>
+        </div>
+        <div class="uk-child-width-1-2 uk-child-width-1-4@s" data-uk-grid>
+            <div>
+                <div
+                        class="uk-card uk-card-video">
+                    <div class="uk-inline uk-light">
+                        <img class="uk-border-rounded-large" src="../www/img/video1.jpeg" alt="Course Title">
+                        <div class="uk-position-cover uk-card-overlay uk-border-rounded-large"></div>
+                        <div class="uk-position-center">
+                            <span data-uk-icon="icon: play-circle; ratio: 3.4"></span>
+                        </div>
+                        <div class="uk-position-small uk-position-bottom-left">
+                            <h5 class="uk-margin-small-bottom">Business Presentation Course</h5>
+                            <div class="uk-text-xsmall">by Thomas Haller</div>
+                        </div>
+                    </div>
+                    <a href="#" class="uk-position-cover"></a>
+                </div>
+            </div>
+            <div>
+                <div
+                        class="uk-card uk-card-video">
+                    <div class="uk-inline uk-light">
+                        <img class="uk-border-rounded-large" src="../www/img/video2.jpeg" alt="Course Title">
+                        <div class="uk-position-cover uk-card-overlay uk-border-rounded-large"></div>
+                        <div class="uk-position-center">
+                            <span data-uk-icon="icon: play-circle; ratio: 3.4"></span>
+                        </div>
+                        <div class="uk-position-small uk-position-bottom-left">
+                            <h5 class="uk-margin-small-bottom">Business Presentation Course</h5>
+                            <div class="uk-text-xsmall">by Thomas Haller</div>
+                        </div>
+                    </div>
+                    <a href="#" class="uk-position-cover"></a>
+                </div>
+            </div>
+            <div>
+                <div
+                        class="uk-card uk-card-video">
+                    <div class="uk-inline uk-light">
+                        <img class="uk-border-rounded-large" src="../www/img/video3.jpeg" alt="Course Title">
+                        <div class="uk-position-cover uk-card-overlay uk-border-rounded-large"></div>
+                        <div class="uk-position-center">
+                            <span data-uk-icon="icon: play-circle; ratio: 3.4"></span>
+                        </div>
+                        <div class="uk-position-small uk-position-bottom-left">
+                            <h5 class="uk-margin-small-bottom">Business Presentation Course</h5>
+                            <div class="uk-text-xsmall">by Thomas Haller</div>
+                        </div>
+                    </div>
+                    <a href="#" class="uk-position-cover"></a>
+                </div>
+            </div>
+            <div>
+                <div
+                        class="uk-card uk-card-video">
+                    <div class="uk-inline uk-light">
+                        <img class="uk-border-rounded-large" src="../www/img/video4.jpeg" alt="Course Title">
+                        <div class="uk-position-cover uk-card-overlay uk-border-rounded-large"></div>
+                        <div class="uk-position-center">
+                            <span data-uk-icon="icon: play-circle; ratio: 3.4"></span>
+                        </div>
+                        <div class="uk-position-small uk-position-bottom-left">
+                            <h5 class="uk-margin-small-bottom">Business Presentation Course</h5>
+                            <div class="uk-text-xsmall">by Thomas Haller</div>
+                        </div>
+                    </div>
+                    <a href="#" class="uk-position-cover"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="uk-container">
+    <div class="uk-background-primary uk-border-rounded-large uk-light">
+        <div class="uk-width-3-4@m uk-margin-auto uk-padding-large">
+            <div class="uk-text-center">
+                <h2 class="uk-h2 uk-margin-remove">Soyez les premiers informés des dernières offres, recevez de nouvelles recettes tendances et bien plus encore!</h2>
+            </div>
+            <div class="uk-margin-medium-top">
+                <div data-uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true">
+                    <form>
+                        <div class="uk-grid-small" data-uk-grid>
+                            <div class="uk-width-1-1 uk-width-expand@s uk-first-column">
+                                <input type="email" placeholder="Email Address" class="uk-input uk-form-large uk-width-1-1 uk-border-pill">
+                            </div>
+                            <div class="uk-width-1-1 uk-width-auto@s">
+                                <input type="submit" value="Inscription" class="uk-button uk-button-large uk-button-warning">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function(){
+        $('#search-user').keyup(function(){
+            $('#result-search').html('');
+
+            var utilisateur = $(this).val();
+
+            if(utilisateur !== ""){
+                var Route = '../www/function/search.php';
+                $.ajax({
+                    type: 'GET',
+                    url: Route ,
+                    data: 'search=' + encodeURIComponent(utilisateur),
+                    success: function(data){
+                        if(data !== ""){
+                            $('#result-search').append(data);
+                        }else{
+                            document.getElementById('result-search').innerHTML = "<div style='font-size: 20px; text-align: center; margin-top: 10px'>Aucune Recettes</div>"
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
